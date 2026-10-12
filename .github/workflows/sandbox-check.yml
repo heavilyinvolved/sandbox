@@ -1,0 +1,21 @@
+name: Sandbox check
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify sandbox page
+        run: |
+          set -euo pipefail
+          test -f sandbox/index.html
+          grep -q 'Sandbox' sandbox/index.html
+          grep -q 'Hello\.' sandbox/index.html
+          echo "OK: sandbox/index.html exists and contains expected markers"
